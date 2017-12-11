@@ -1,0 +1,10 @@
+type: object
+properties:
+  currentMatchValue:
+    type: string
+  currentRedirect:
+    type: string
+  newMatchValue:
+    type: string
+  newRedirect:
+    type: string

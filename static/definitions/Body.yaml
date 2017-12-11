@@ -1,0 +1,13 @@
+type: object
+properties:
+  description:
+    type: string
+  matchRuleFormat:
+    type: string
+    description: "match rule format should always be 1.0"
+    enum:
+      - "1.0"
+  matchRules:
+    type: array
+    items:
+      $ref: "./BodyMatchRules.yaml"

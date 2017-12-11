@@ -1,0 +1,24 @@
+type: object
+properties:
+  location:
+    type: string
+  revisionId:
+    type: integer
+  policyId:
+    type: integer
+  version:
+    type: integer
+  description:
+    type: string
+  createdBy:
+    type: string
+  createdDate:
+    type: integer
+  lastModifiedBy:
+    type: string
+  lastModifiedDate:
+    type: integer
+  activations:
+    type: array
+    items:
+      $ref: "./ActivationObj.yaml"

@@ -1,0 +1,14 @@
+type: object
+properties:
+  name:
+    type: string
+  version:
+    type: integer
+  groupId:
+    type: integer
+  status:
+    type: string
+  activatedBy:
+    type: string
+  activationDate:
+    type: integer

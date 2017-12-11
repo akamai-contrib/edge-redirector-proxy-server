@@ -1,0 +1,23 @@
+type: object
+properties:
+  matches:
+    type: array
+    items:
+      $ref: "./Match.yaml"
+  redirectURL:
+    type: string
+  matchURL:
+    type: string
+  statusCode:
+    type: integer
+    description: "301 perm, 302 temp "
+    enum:
+      - 301
+      - 302
+  type:
+    type: string
+    description: "type should be 'erMatchRule' "
+    enum:
+      - "erMatchRule"
+  name:
+    type: string

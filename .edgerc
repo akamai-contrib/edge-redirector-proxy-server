@@ -1,0 +1,20 @@
+[original]
+host = 
+client_token = 
+client_secret = 
+access_token = 
+max-body = 131072
+
+[purge]
+host = 
+client_token = 
+client_secret = 
+access_token = 
+max-body = 131072
+
+[cloudlets]
+host = 
+client_token = 
+client_secret = 
+access_token = 
+max-body = 131072

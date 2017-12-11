@@ -1,0 +1,16 @@
+type: object
+properties:
+  serviceVersion:
+    type: string
+  apiVersion:
+    type: string
+  network:
+    type: string
+    description: "the network could be any one of these"
+    enum:
+      - "prod"
+      - "staging"
+  policyinfo:
+    $ref: "./PolicyInfo.yaml"
+  propertyInfo:
+    $ref: "./PropertyInfo.yaml"

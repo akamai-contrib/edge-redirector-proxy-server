@@ -1,0 +1,29 @@
+validationJsonResponse:
+  type: object
+  properties:
+    source:
+      type: string
+    destination:
+      type: string
+    finalDestination:
+      type: string
+    statusCode:
+      type: integer
+    message:
+      type: string
+    redirectsFollowed:
+      type: integer
+    redirects:
+      type: array
+      items:
+        $ref: '#/redirectArray'
+    validation:
+      type: boolean
+
+redirectArray:
+  type: object
+  properties:
+    statusCode:
+      type: integer
+    redirectUri:
+      type: string

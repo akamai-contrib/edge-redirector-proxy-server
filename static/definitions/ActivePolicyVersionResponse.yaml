@@ -1,0 +1,7 @@
+  ActivePolicyVersionResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      env:
+        type: string

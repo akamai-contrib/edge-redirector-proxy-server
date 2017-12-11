@@ -1,0 +1,18 @@
+type: object
+properties:
+  type:
+    type: string
+  akaRuleId:
+    type: string
+  end:
+    type: integer
+  id:
+    type: integer
+  location:
+    type: string
+  matchUrl:
+    type: string
+  matches:
+    type: array
+    items:
+      $ref: "./Match.yaml"

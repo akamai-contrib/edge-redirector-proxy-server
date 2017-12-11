@@ -1,0 +1,33 @@
+{
+  "name": "edgeredirector-server",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Edge Redirector Proxy Server APIs",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.12.3",
+    "swagger-express-mw": "^0.1.0",
+    "swagger-tools": "^0.10.1",
+    "edgegrid": "^2.0.7",
+    "js-yaml": "^3.6.0",
+    "log4js": "^0.6.37",
+    "cors": "^2.5.3",
+    "async": "^2.0.0-rc.6",
+    "request": "^2.72.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.4.5",
+    "node-mocks-http": "^1.5.2",
+    "sinon": "^1.17.3",
+    "lodash": "^4.16.2"
+  },
+  "scripts": {
+    "start": "swagger project start",
+    "test": "istanbul cover _mocha -- -R spec -t 10000 test/api/*"
+  }
+}

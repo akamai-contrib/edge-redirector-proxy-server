@@ -1,0 +1,480 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: "Akamai Services"
+  description: "A set of utility services to interact with Akamai Redirector Cloudlets."
+# basePath prefixes all resource paths
+basePath: /api
+tags:
+  -
+    name: "Policies"
+    description: "All Policy services under this"
+#
+schemes:
+  # tip: remove http to make production-grade
+  - http
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /getActivePolicyVersion/{policyNumber}/{env}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: PolicyController
+    get:
+      tags:
+        - "Policies"
+      description: |
+              Returns Active policy of the given environment.
+              Returns 404, if no active policy found for the given environment.
+      # used as the method name of the controller
+      operationId: ActivePolicyVersion
+      produces:
+        - "application/json"
+      parameters:
+        -
+          name: policyNumber
+          in: path
+          description: Policy Number of the cloud template.
+          required: true
+          type: integer
+        -
+          name: env
+          in: path
+          description: Need active policy of this env/network.
+          required: true
+          type: string
+          enum:
+            - "dev"
+            - "prod"
+            - "staging"
+          default: "prod"
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition ./definitions/ActivePolicyVersionResponse.yaml
+            $ref: "./static/definitions/Policy.yaml"
+        # responses may fall through to errors
+        "404":
+          description: Resource not found
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+        default:
+          description: All other errors
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+  /getAllActivationInfo/{policyNumber}/:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: PolicyController
+    get:
+      tags:
+        - "Policies"
+      description: |
+              Returns all currently and once activated versions within the policy.
+              Returns 404 if no activations exist.
+      # used as the method name of the controller
+      operationId: AllActivationInfo
+      produces:
+        - "application/json"
+      parameters:
+        -
+          name: policyNumber
+          in: path
+          description: Cloudlet policy number
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition ./definitions/ActivePolicyVersionResponse.yaml
+            type: array
+            items:
+              $ref: "./static/definitions/ActivationObj.yaml"
+        # responses may fall through to errors
+        "404":
+          description: Resource not found / No activations
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+        default:
+          description: All other errors
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+  /getPolicyByVersion/{policyNumber}/{version}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: PolicyController
+    get:
+      tags:
+        - "Policies"
+      description: Returns the specified version of the specified policy.
+      # used as the method name of the controller
+      operationId: GetPolicyByVersion
+      produces:
+        - "application/json"
+      parameters:
+        -
+          name: policyNumber
+          in: path
+          description: Policy Number of the cloud template.
+          required: true
+          type: integer
+        -
+          name: version
+          in: path
+          description: Policy version of the cloud template.
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition ./definitions/ActivePolicyVersionResponse.yaml
+            $ref: "./static/definitions/Policy.yaml"
+        # responses may fall through to errors
+        "404":
+          description: Resource not found
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+  /getAllVersionsOfAPolicy/{policyNumber}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: PolicyController
+    get:
+      tags:
+        - "Policies"
+      description: Returns a history of all the versions.
+      # used as the method name of the controller
+      operationId: AllVersion
+      produces:
+        - "application/json"
+      parameters:
+        -
+          name: policyNumber
+          in: path
+          description: Policy Number of the cloud template.
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition ./definitions/ActivePolicyVersionResponse.yaml
+            type: array
+            items:
+              $ref: "./static/definitions/AllVersionsOfAPolicy.yaml"
+        # responses may fall through to errors
+        "404":
+          description: Resource not found
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+        default:
+          description: All other errors
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+  /postNewVersion/{policyNumber}/:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: PolicyController
+    post:
+      tags:
+        - "Policies"
+      description: Create new version to policyNumber with given JSON.
+      # used as the method name of the controller
+      operationId: PostNewVersion
+      produces:
+        - "application/json"
+      consumes:
+        - "application/json"
+      parameters:
+        -
+          name: bodyJson
+          in: body
+          description: JSON with which to create new version
+          required: true
+          schema:
+            $ref: "./static/definitions/Body.yaml"
+        -
+          name: policyNumber
+          in: path
+          description: Policy Number of the cloud template.
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition ./definitions/ActivePolicyVersionResponse.yaml
+            $ref: "./static/definitions/Policy.yaml"
+        # responses may fall through to errors
+        "404":
+          description: Resource not found
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+        "400":
+          description: Bad Request
+        default:
+          description: All other errors
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+  /activate/{policyNumber}/{versionNumber}/{network}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: PolicyController
+    post:
+      tags:
+        - "Policies"
+      description: Activates given version of given policy in given network.
+      # used as the method name of the controller
+      operationId: ActivateVersion
+      produces:
+        - "application/json"
+      parameters:
+        -
+          name: policyNumber
+          in: path
+          description: Policy Number of the cloud template.
+          required: true
+          type: integer
+        -
+          name: versionNumber
+          in: path
+          description: version of policy
+          required: true
+          type: integer
+        -
+          name: network
+          in: path
+          description: activate policy version of this env/network.
+          required: true
+          type: string
+          enum:
+            - "prod"
+            - "staging"
+          default: "prod"
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "./static/definitions/ActivationObj.yaml"
+        # responses may fall through to errors
+        "404":
+          description: Resource not found
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+        default:
+          description: All other errors
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+  /addRule/{policyNumber}/{versionNumber}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: PolicyController
+    put:
+      tags:
+        - "Policies"
+      description: Add new redirects to specific version of given policy.
+      # used as the method name of the controller
+      operationId: AddRule
+      produces:
+        - "application/json"
+      consumes:
+        - "application/json"
+      parameters:
+        -
+          name: bodyJson
+          in: body
+          description: JSON of redirect to add to the version
+          required: true
+          schema:
+            $ref: "./static/definitions/Body.yaml"
+        -
+          name: policyNumber
+          in: path
+          description: Policy Number of the cloud template.
+          required: true
+          type: integer
+        -
+          name: versionNumber
+          in: path
+          description: Version of policy to update
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition ./definitions/ActivePolicyVersionResponse.yaml
+            $ref: "./static/definitions/Policy.yaml"
+        # responses may fall through to errors
+        "404":
+          description: Resource not found
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+        "400":
+          description: Bad Request
+        default:
+          description: All other errors
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+  /deleteRule/{policyNumber}/{versionNumber}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: PolicyController
+    put:
+      tags:
+        - "Policies"
+      description: Delete specific rule from specific version of given policy.
+      # used as the method name of the controller
+      operationId: DeleteRule
+      produces:
+        - "application/json"
+      consumes:
+        - "application/json"
+      parameters:
+        -
+          name: bodyJson
+          in: body
+          description: JSON of rule to delete
+          required: true
+          schema:
+            $ref: "./static/definitions/Body.yaml"
+        -
+          name: policyNumber
+          in: path
+          description: Policy Number of the cloud template.
+          required: true
+          type: integer
+        -
+          name: versionNumber
+          in: path
+          description: version within policy
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition ./definitions/ActivePolicyVersionResponse.yaml
+            $ref: "./static/definitions/Policy.yaml"
+        # responses may fall through to errors
+        "404":
+          description: Resource not found
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+        "400":
+          description: Bad Request
+        default:
+          description: All other errors
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+  /editRule/{policyNumber}/{versionNumber}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: PolicyController
+    put:
+      tags:
+        - "Policies"
+      description: Edits a rule that is already in the version.
+      # used as the method name of the controller
+      operationId: EditRule
+      produces:
+        - "application/json"
+      consumes:
+        - "application/json"
+      parameters:
+        -
+          name: editInfo
+          in: body
+          description: JSON of rule to edit and what to change it to
+          required: true
+          schema:
+            $ref: "./static/definitions/EditRule.yaml"
+        -
+          name: policyNumber
+          in: path
+          description: Policy Number of the cloud template.
+          required: true
+          type: integer
+        -
+          name: versionNumber
+          in: path
+          description: version within policy
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition ./definitions/ActivePolicyVersionResponse.yaml
+            $ref: "./static/definitions/Policy.yaml"
+        # responses may fall through to errors
+        "404":
+          description: Resource not found
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+        "400":
+          description: Bad Request
+        default:
+          description: All other errors
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+  /validatePolicyRules/{policyNumber}/{versionNumber}/{network}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: PolicyController
+    get:
+      tags:
+        - "Policies"
+      description: Validates a policy using given policy id, version and env/network
+      # used as the method name of the controller
+      operationId: ValidatePolicyRules
+      produces:
+        - "application/json"
+      parameters:
+        -
+          name: policyNumber
+          in: path
+          description: Policy Number of the cloud template.
+          required: true
+          type: integer
+        -
+          name: versionNumber
+          in: path
+          description: version of policy
+          required: true
+          type: integer
+        -
+          name: network
+          in: path
+          description: Validate policy version of this env/network.
+          required: true
+          type: string
+          enum:
+            - "prod"
+            - "staging"
+          default: "prod"
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition ./static/definitions/ValidatePolicyRulesResponse.yaml
+            type: array
+            items:
+              $ref: "./static/definitions/ValidatePolicyRulesResponse.yaml#/validationJsonResponse"
+        # responses may fall through to errors
+        "404":
+          description: Resource not found
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+        default:
+          description: All other errors
+          schema:
+            $ref: "./static/definitions/StandardError.yaml#/ErrorModel"
+  /swagger:
+    x-swagger-pipe: swagger_raw

@@ -1,0 +1,14 @@
+type: object
+properties:
+  caseSensitive:
+    type: boolean
+  matchOperator:
+    type: string
+    description: "for most redirects will be 'contains'/ 'equals' -- add other types as necessary"
+  matchType:
+    type: string
+    description: "for most redirects will be 'path' -- add other types as necessary"
+  matchValue:
+    type: string
+  negate:
+    type: boolean

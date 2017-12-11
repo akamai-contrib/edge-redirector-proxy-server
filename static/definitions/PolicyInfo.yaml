@@ -1,0 +1,24 @@
+type: object
+properties:
+  policyId:
+    type: integer
+  name:
+    type: string
+  version:
+    type: integer
+  status:
+    type: string
+    description: "the status could be any one of these"
+    enum:
+      - "active"
+      - "inactive"
+      - "deactivated"
+      - "pending"
+  statusDetail:
+    type: string
+  detailCode:
+    type: integer
+  activatedBy:
+    type: string
+  activationDate:
+    type: integer

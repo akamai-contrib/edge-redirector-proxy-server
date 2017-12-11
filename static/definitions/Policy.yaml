@@ -1,0 +1,34 @@
+type: object
+properties:
+  location:
+    type: string
+  revisionId:
+    type: integer
+  policyId:
+    type: integer
+  version:
+    type: integer
+  description:
+    type: string
+  createdBy:
+    type: string
+  createdDate:
+    type: integer
+  lastModifiedBy:
+    type: string
+  lastModifiedDate:
+    type: integer
+  matchRuleFormat:
+    type: string
+  deleted:
+    type: boolean
+  rulesLocked:
+    type: boolean
+  matchRules:
+    type: array
+    items:
+      $ref: "./MatchRule.yaml"
+  activations:
+    type: array
+    items:
+      $ref: "./ActivationObj.yaml"
