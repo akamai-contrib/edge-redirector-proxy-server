@@ -9,7 +9,7 @@
 
 1. Clone the repo, and navigate to the repo.
 2. **If you do not have swagger installed globally - you will need this before
-   continuing.** `npm install -g swagger`
+   continuing.**
 3. Run `npm install` to install the necessary dependencies.
 4. Configure your API endpoints in Akamai Luna console to generate the
    appropriate API keys and place them into an `.edgerc` file in the root folder
